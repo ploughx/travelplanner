@@ -13,12 +13,18 @@ export class AIService {
     if (import.meta.env.VITE_QWEN_API_KEY) {
       this.aiProvider = 'qwen';
       this.apiKey = import.meta.env.VITE_QWEN_API_KEY;
-      this.baseURL = '/api/qwen'; // 使用代理地址
+      // 生产环境直接调用 API，开发环境使用代理
+      this.baseURL = import.meta.env.DEV
+        ? '/api/qwen' 
+        : 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation';
       this.model = 'qwen-max';
     } else if (import.meta.env.VITE_ERNIE_API_KEY) {
       this.aiProvider = 'ernie';
       this.apiKey = import.meta.env.VITE_ERNIE_API_KEY;
-      this.baseURL = '/api/ernie'; // 使用代理地址
+      // 生产环境直接调用 API，开发环境使用代理
+      this.baseURL = import.meta.env.DEV
+        ? '/api/ernie' 
+        : 'https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie-4.0-8k';
       this.model = 'ernie-4.0-8k';
     } else {
       this.aiProvider = 'zhipu';
@@ -27,7 +33,7 @@ export class AIService {
       this.model = 'glm-4';
     }
     
-    console.log(`使用AI服务: ${this.aiProvider}`);
+    console.log(`使用AI服务: ${this.aiProvider}, 环境: ${import.meta.env.DEV ? '开发' : '生产'}`);
   }
 
   async chatWithAI(message: string, conversationHistory: Array<{role: string, content: string}> = []): Promise<string> {

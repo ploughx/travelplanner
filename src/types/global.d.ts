@@ -14,6 +14,11 @@ interface Window {
 
 // 环境变量类型
 interface ImportMetaEnv {
+  // Vite 内置环境变量
+  readonly MODE: string;
+  readonly DEV: boolean;
+  readonly PROD: boolean;
+  
   // AI模型配置
   readonly VITE_QWEN_API_KEY?: string;
   readonly VITE_ERNIE_API_KEY?: string;
